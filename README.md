@@ -90,4 +90,5 @@ This script generates a customizable schedule of time slots from a CSV input fil
 * Handles CSVs with headers in French (`Nom`, `Prénom`) or English (`Name`, `FirstName`).
 * Break periods are strictly skipped—partial overlaps jump to the break end before assigning the next slot.
 * For more details, use `Get-Help .\schedule.ps1 -Full`.
+* Example files are available on the Github `dataFrench.csv` and `dataEnglish.csv`.
 
