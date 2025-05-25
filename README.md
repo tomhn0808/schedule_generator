@@ -71,6 +71,7 @@ This script requires the **PSHTML** module to generate an HTML report. If it is 
 Install-Module PSHTML -Scope CurrentUser
 ```
 This command requires Administrator privileges.
+---
 ## Examples
 
 ```powershell
