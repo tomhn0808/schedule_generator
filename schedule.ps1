@@ -269,7 +269,7 @@ if ($htmlReport) {
         body {
             ConvertTo-PSHTMLtable -Object $scheduleCleaned
         }
-        }  | Out-File '.\htmlReport3.html'
+        }  | Out-File '.\htmlReport.html'
         Write-Host "HTML report generated" -ForegroundColor Green
     }
     catch {

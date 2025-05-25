@@ -28,7 +28,7 @@ This script generates a customizable schedule of time slots from a CSV input fil
 | `scheduleStart`    | `string (HH:mm)` | No       | `"08:30"`         | Start time of the first slot, in `HH:mm` format.                                                                               |
 | `scheduleEnd`      | `string (HH:mm)` | No       | `"17:00"`         | End time of the last slot, in `HH:mm` format.                                                                                  |
 | `breakTimes`       | `string[]`       | No       | `@[""]`           | Optional list of break periods in `HH:mm-HH:mm` format, comma-separated. Example: `-breakTimes "10:00-10:30","12:00-13:00"`.   |
-| `htmlReport`       | `Switch`         | No       | `false`           | Generates an HTML report of the schedule using the `PSHTML` module. Requires user input for the report title.                  |
+| `htmlReport`       | `Switch`         | No       | `false`           | Generates an HTML report of the schedule using the `PSHTML` module. Requires user input for the report title. The file name will be `htmlReport.html`                  |
 | `pdfReport`        | `Switch`         | No       | `false`           | Generates a PDF report using the "Microsoft Print to PDF" printer. User is prompted to name the PDF file before saving.        |
 ---
 
