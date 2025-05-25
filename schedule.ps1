@@ -98,7 +98,7 @@ param (
         })]
     [string[]]$breakTimes = ""
 )
-
+Import-Module PSHTML
 $tmpPath = ".\cleaned_temp.csv"
 
 if (-not(Test-Path $inputFile)) {
@@ -111,8 +111,8 @@ if ($scheduleStart -notmatch '^[0-2][0-9]:[0-5][0-9]$') {
 if ($scheduleEnd -notmatch '^[0-2][0-9]:[0-5][0-9]$') {
     throw "Invalid format: '$scheduleStart'. Use HH:mm (e.g., 08:30)"
 }
-#[datetime]$scheduleStart=$scheduleStart
-#[datetime]$scheduleEnd=$scheduleEnd
+[datetime]$scheduleStart=$scheduleStart
+[datetime]$scheduleEnd=$scheduleEnd
 
 # Transform line to be Latin1 encoded (Windows-1252)
 $bytes = [System.IO.File]::ReadAllBytes($inputFile)
@@ -186,9 +186,8 @@ $students = $students | Where-Object {
 $shuffled = $students | Get-Random -Count $students.Count
 
 # Schedule parameters
-$slotDurationCleaned = [timespan]::FromMinutes($slotDuration)
-$scheduleStart = [datetime]::ParseExact($scheduleStart, "HH:mm", $null)
-$scheduleEnd = [datetime]::ParseExact($scheduleEnd, "HH:mm", $null)
+$scheduleStart = [datetime]::ParseExact($scheduleStart.ToString("HH:mm"), "HH:mm", $null)
+$scheduleEnd = [datetime]::ParseExact($scheduleEnd.ToString("HH:mm"), "HH:mm", $null)
 
 # Create datetime interval for break time
 $parsedBreaks = foreach ($b in $breakTimes) {
@@ -244,3 +243,4 @@ catch {
     exit 3
 }
 Write-Host "Planning generated" -ForegroundColor Green
+
