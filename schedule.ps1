@@ -80,22 +80,10 @@ param (
 
     # schedule start time
     [Parameter(Position = 5, Mandatory = $false)]
-    [ValidateScript({
-            if ($_ -notmatch '^[0-2][0-9]:[0-5][0-9]$') {
-                throw "Invalid format: '$_'. Use HH:mm (e.g., 08:30)"
-            }
-            return $true
-        })]
     [string]$scheduleStart = "08:30",
 
     # end schedule time
     [Parameter(Position = 6, Mandatory = $false)]
-    [ValidateScript({
-            if ($_ -notmatch '^[0-2][0-9]:[0-5][0-9]$') {
-                throw "Invalid format: '$_'. Use HH:mm (e.g., 08:30)"
-            }
-            return $true
-        })]
     [string]$scheduleEnd = "17:00",
 
     # break time list (separated by comma (,))
@@ -117,7 +105,14 @@ if (-not(Test-Path $inputFile)) {
     Write-Error "The input file: $inputFile does not exist"
     exit 1
 }
-
+if ($scheduleStart -notmatch '^[0-2][0-9]:[0-5][0-9]$') {
+    throw "Invalid format: '$scheduleStart'. Use HH:mm (e.g., 08:30)"
+}
+if ($scheduleEnd -notmatch '^[0-2][0-9]:[0-5][0-9]$') {
+    throw "Invalid format: '$scheduleStart'. Use HH:mm (e.g., 08:30)"
+}
+#[datetime]$scheduleStart=$scheduleStart
+#[datetime]$scheduleEnd=$scheduleEnd
 
 # Transform line to be Latin1 encoded (Windows-1252)
 $bytes = [System.IO.File]::ReadAllBytes($inputFile)
