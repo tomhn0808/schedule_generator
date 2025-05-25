@@ -10,7 +10,7 @@ This script generates a customizable schedule of time slots from a CSV input fil
 * **Filters** entries based on one or more groups (A–E or `/` for all).
 * **Shuffles** entries, assigns time slots of fixed duration.
 * **Skips** optional break periods.
-* **Writes** an output CSV (UTF-8 with BOM) containing only `Nom`/`Name`, `Prénom`/`FirstName`, and `Horaire`/`Schedule`.
+* **Writes** an output CSV (UTF-8 with BOM) containing only `Nom`/`Name`, `Prénom`/`FirstName`, and `Horaire`/`Schedule`. Optionally, writes the output in PDF or/and HTML format
 
 > ⚠️ **Warning:** Ensure the input CSV file is **closed** (not open in Excel or another application) when running this script to prevent file access errors.
 
@@ -28,7 +28,8 @@ This script generates a customizable schedule of time slots from a CSV input fil
 | `scheduleStart`    | `string (HH:mm)` | No       | `"08:30"`         | Start time of the first slot, in `HH:mm` format.                                                                               |
 | `scheduleEnd`      | `string (HH:mm)` | No       | `"17:00"`         | End time of the last slot, in `HH:mm` format.                                                                                  |
 | `breakTimes`       | `string[]`       | No       | `@[""]`           | Optional list of break periods in `HH:mm-HH:mm` format, comma-separated. Example: `-breakTimes "10:00-10:30","12:00-13:00"`.   |
-
+| `htmlReport`       | `Switch`         | No       | `false`           | Generates an HTML report of the schedule using the `PSHTML` module. Requires user input for the report title.                  |
+| `pdfReport`        | `Switch`         | No       | `false`           | Generates a PDF report using the "Microsoft Print to PDF" printer. User is prompted to name the PDF file before saving.        |
 ---
 
 ## Description of Behavior
@@ -58,10 +59,18 @@ This script generates a customizable schedule of time slots from a CSV input fil
 
    * Selects only specific properties (`Name`,`FirstName`,`Schedule`). Customisation for the output properties is in coding process.
    * Exports the final schedule as a UTF-8 BOM CSV at `outputFile`.
+   * Provides an option to generate an **HTML report** using the `PSHTML` module, where users can define a custom title.
+   * Allows the **PDF report** generation via the "Microsoft Print to PDF" printer, requiring user input for file naming.
    * Exits with an error code if writing fails.
 
 ---
+## Requirements
 
+This script requires the **PSHTML** module to generate an HTML report. If it is not installed, you can install it using the following command:
+```powershell
+Install-Module PSHTML -Scope CurrentUser
+```
+This command requires Administrator privileges.
 ## Examples
 
 ```powershell
