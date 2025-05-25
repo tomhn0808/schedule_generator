@@ -96,7 +96,16 @@ param (
             }
             return $true
         })]
-    [string[]]$breakTimes = ""
+    [string[]]$breakTimes = "",
+
+    # HTML report using PSHTML module
+    [Parameter(Position=8)]
+    [Switch]$htmlReport=$false,
+
+    # PDF report. You will be prompted for the file's name
+    [Parameter(Position=9)]
+    [Switch]$pdfReport=$false
+
 )
 Import-Module PSHTML
 $tmpPath = ".\cleaned_temp.csv"
@@ -243,4 +252,39 @@ catch {
     exit 3
 }
 Write-Host "Planning generated" -ForegroundColor Green
+
+if ($htmlReport) {
+    $css = 'h1 {font-size: 2.5em;font-weight: bold;color: #367AB1;letter-spacing: 2px;text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);margin-bottom: 20px;}body{background:#252525;font:87.5%/1.5em Lato,sans-serif;padding:20px}table{border-spacing:1px;border-collapse:collapse;background:#F7F6F6;border-radius:6px;overflow:hidden;max-width:800px;width:100%;margin:0 auto;position:relative}td,th{padding-left:8px}thead tr{height:60px;background:#367AB1;color:#F5F6FA;font-size:1.2em;font-weight:700;text-transform:uppercase}tbody tr{height:48px;border-bottom:1px solid #367AB1;text-transform:capitalize;font-size:1em;&:last-child {;border:0}tr:nth-child(even){background-color:#E8E9E8}'
+    $title = Read-Host "Enter the title for the schedule"
+    try {
+        html {
+        head { 
+            style {
+                $css
+            }
+        }
+        H1 {
+            $title
+        }
+        body {
+            ConvertTo-PSHTMLtable -Object $scheduleCleaned
+        }
+        }  | Out-File '.\htmlReport3.html'
+        Write-Host "HTML report generated" -ForegroundColor Green
+    }
+    catch {
+        Write-Error "There has been an error writing the HTML report"
+        exit 4
+    }
+}
+if ($pdfReport) {
+    try {
+        Write-Host "You will be prompted for the PDF file name" -ForegroundColor DarkYellow
+        $scheduleCleaned | Out-Printer -Name "Microsoft Print To PDF"
+    }
+    catch {
+        Write-Error "There has been an error writing the HTML report"
+        exit 5
+    }
+}
 
